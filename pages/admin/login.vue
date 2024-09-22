@@ -18,7 +18,7 @@
                         <div class="input-group mb-3">
                             <div class="input-group-prepend">
                                 <span class="input-group-text">
-                                    <i class="fa fa-evelope"></i>
+                                    <i class="fa fa-envelope"></i>
                                 </span>
                             </div>
                             <input class="form-control" v-model="user.email" :class="{'is-invalid': validation.email}" type="email"  placeholder="Email Address">
