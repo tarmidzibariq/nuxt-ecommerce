@@ -1,17 +1,20 @@
 <template>
   <ul class="c-sidebar-nav">
 
-    <li class="c-sidebar-nav-item"><nuxt-link :to="{name: 'admin-dashboard'}" class="c-sidebar-nav-link" href="index.html">
+    <li class="c-sidebar-nav-item">
+      <nuxt-link :to="{name: 'admin-dashboard'}" class="c-sidebar-nav-link" href="index.html">
         <svg class="c-sidebar-nav-icon">
           <use xlink:href="@/node_modules/@coreui/icons/sprites/free.svg#cil-speedometer"></use>
-        </svg> Dashboard</nuxt-link></li>
+        </svg> Dashboard</nuxt-link>
+    </li>
 
     <li class="c-sidebar-nav-title">MASTER DATA</li>
 
-    <li class="c-sidebar-nav-item"><a href="#" class="c-sidebar-nav-link">
+    <li class="c-sidebar-nav-item">
+      <nuxt-link :to="{name: 'admin-categories'}" class="c-sidebar-nav-link">
         <svg class="c-sidebar-nav-icon">
           <use xlink:href="@/node_modules/@coreui/icons/sprites/free.svg#cil-folder"></use>
-        </svg> Categories</a>
+        </svg> Categories</nuxt-link>
     </li>
 
     <li class="c-sidebar-nav-item"><a href="#" class="c-sidebar-nav-link">
@@ -21,7 +24,7 @@
     </li>
 
     <li class="c-sidebar-nav-title">ORDERS</li>
-    
+
     <li class="c-sidebar-nav-item"><a href="#" class="c-sidebar-nav-link">
         <svg class="c-sidebar-nav-icon">
           <use xlink:href="@/node_modules/@coreui/icons/sprites/free.svg#cil-cart"></use>
@@ -56,10 +59,12 @@
   export default {
 
   }
+
 </script>
 
 <style scoped>
   a.nuxt-link-active {
-    background: rgba(255,255,255,.05)!important;
+    background: rgba(255, 255, 255, .05) !important;
   }
+
 </style>
