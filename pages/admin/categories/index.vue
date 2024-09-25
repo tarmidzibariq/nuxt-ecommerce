@@ -17,7 +17,8 @@
                         style="padding-top: 10px;">
                         <i class="fa fa-plus-circle"></i> ADD NEW</nuxt-link>
                     </div>
-                    <input type="text" class="form-control" v-model="search"  @keypress.enter="searchData" placeholder="cari berdasarkan nama category">
+                    <input type="text" class="form-control" v-model="search" @keypress.enter="searchData"
+                      placeholder="cari berdasarkan nama category">
                     <div class="input-group-append">
                       <button @click="searchData" class="btn btn-warning"><i class="fa fa-search"></i>SEARCH</button>
                     </div>
@@ -29,13 +30,15 @@
                     <img class="img-fluid" width="50" :src="data.item.image" />
                   </template>
                   <template v-slot:cell(actions)="row">
-                      <b-button :to="{name: 'admin-categories-edit-id', params: {id: row.item.id}}" variant="info" size="sm">
-                          EDIT
-                      </b-button>
+                    <b-button :to="{name: 'admin-categories-edit-id', params: {id: row.item.id}}" variant="info"
+                      size="sm">
+                      EDIT
+                    </b-button>
+                    <b-button variant="danger" size="sm" @click="destroyCategory(row.item.id)">DELETE</b-button>
                   </template>
                 </b-table>
 
-                 <!-- pagination -->
+                <!-- pagination -->
                 <b-pagination align="right" :value="categories.current_page" :total-rows="categories.total"
                   :per-page="categories.per_page" @change="changePage" aria-controls="my-table"></b-pagination>
 
@@ -80,51 +83,89 @@
             key: 'actions',
             tdClass: 'text-center',
           }
-          ],
+        ],
 
-          //   state search
+        //   state search
         search: ''
       }
     },
 
     // hook "asyncData"
-    async asyncData({ store }) {
-        await store.dispatch('admin/category/getCategoriesData');
+    async asyncData({
+      store
+    }) {
+      await store.dispatch('admin/category/getCategoriesData');
     },
 
     // computed
     computed: {
-        // categories
-        categories() {
-            return this.$store.state.admin.category.categories
-        },
+      // categories
+      categories() {
+        return this.$store.state.admin.category.categories
+      },
     },
 
     //method
     methods: {
-    
-        //method "searchData"
-        searchData() {
 
-            //commit to mutation "SET_PAGE"
-            this.$store.commit('admin/category/SET_PAGE', 1)
+      //method "searchData"
+      searchData() {
 
-            //dispatch on action "getCategoriesData"
-            this.$store.dispatch('admin/category/getCategoriesData', this.search)
-        },
-        //method "changePage"
-        changePage(page) {
+        //commit to mutation "SET_PAGE"
+        this.$store.commit('admin/category/SET_PAGE', 1)
 
-            //commit to mutation "SET_PAGE"
-            this.$store.commit('admin/category/SET_PAGE', page)
+        //dispatch on action "getCategoriesData"
+        this.$store.dispatch('admin/category/getCategoriesData', this.search)
+      },
+      //method "changePage"
+      changePage(page) {
 
-            //dispatch on action "getCategoriesData"
-            this.$store.dispatch('admin/category/getCategoriesData', this.search)
-        },
+        //commit to mutation "SET_PAGE"
+        this.$store.commit('admin/category/SET_PAGE', page)
 
+        //dispatch on action "getCategoriesData"
+        this.$store.dispatch('admin/category/getCategoriesData', this.search)
+      },
+
+      // method "destroyCategory"
+      destroyCategory(id) {
+        this.$swal.fire({
+          title: 'APAKAH ANDA YAKIN ?',
+          text: "INGIN MENGHAPUS DATA INI !",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'YA, HAPUS!',
+          cancelButtonText: 'TIDAK',
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+              // dispatch to action "deleteCategory" vuex
+              this.$store.dispatch('admin/category/destroyCategory', id)
+                .then(() => {
+
+                  // refresh data
+                  this.$nuxt.refresh()
+
+                  // alert
+                  this.$swal.fire({
+                    title: 'BERHASIL!',
+                    text: "Data Berhasil Dihapus!",
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 2000
+                  })
+
+                })
+
+            }
+
+          })
+
+        }
+      }
     }
-
-  }
 
 </script>
 
