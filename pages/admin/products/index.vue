@@ -17,9 +17,9 @@
                         style="padding-top: 10px;">
                         <i class="fa fa-plus-circle"></i> ADD NEW</nuxt-link>
                     </div>
-                    <input type="text" class="form-control" placeholder="cari berdasarkan nama product">
+                    <input type="text" class="form-control" v-model="search" @keypress.enter="searchData" placeholder="cari berdasarkan nama product">
                     <div class="input-group-append">
-                      <button class="btn btn-warning"><i class="fa fa-search"></i>
+                      <button  @click="searchData" class="btn btn-warning"><i class="fa fa-search"></i>
                         SEARCH
                       </button>
                     </div>
@@ -73,7 +73,10 @@
             key: 'actions',
             tdClass: 'text-center',
           }
-        ]
+        ],
+
+        // state search
+        search: ''
       }
     },
 
@@ -91,7 +94,20 @@
       products() {
         return this.$store.state.admin.product.products
       },
+      // method
     },
+    methods: {
+
+      // method "searchData"
+      searchData() {
+
+        // commit to mutation "SET_PAGE"
+        this.$store.commit('admin/product/SET_PAGE', 1)
+
+        // dispatch on action "getProductData"
+        this.$store.dispatch('admin/product/getProductsData', this.search)
+      }
+      }
   }
 
 </script>
