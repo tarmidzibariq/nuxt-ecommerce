@@ -29,6 +29,11 @@
                 <b-table striped bordered hover :items="products.data" :fields="fields" show-empty>
                 </b-table>
 
+                <!-- pagination -->
+                <b-pagination align="right" :value="products.current_page" :total-rows="products.total"
+                  :per-page="products.per_page" @change="changePage" aria-controls="my-table"></b-pagination>
+
+
               </div>
             </div>
           </div>
@@ -106,6 +111,16 @@
 
         // dispatch on action "getProductData"
         this.$store.dispatch('admin/product/getProductsData', this.search)
+      },
+
+      // method "changePage"
+      changePage(page) {
+        // commit to mutation "SET_PAGE"
+        this.$store.commit('admin/product/SET_PAGE', page)
+  
+        // dispatch on action "getProductData"
+        this.$store.dispatch('admin/product/getProductsData', this.search)
+        
       }
       }
   }
