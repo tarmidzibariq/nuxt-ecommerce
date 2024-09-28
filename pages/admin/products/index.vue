@@ -33,7 +33,7 @@
                       size="sm">
                       EDIT
                     </b-button>
-                    <!-- <b-button variant="danger" size="sm" @click="destroyCategory(row.item.id)">DELETE</b-button> -->
+                    <b-button variant="danger" size="sm" @click="destroyProduct(row.item.id)">DELETE</b-button>
                   </template>
                 </b-table>
 
@@ -128,6 +128,44 @@
 
         // dispatch on action "getProductData"
         this.$store.dispatch('admin/product/getProductsData', this.search)
+
+      },
+
+      // method "destroyProduct"
+      destroyProduct(id) {
+        this.$swal.fire({
+          title: 'APAKAH ANDA YAKIN ?',
+          text: "INGIN MENGHAPUS DATA INI !",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'YA, HAPUS!',
+          cancelButtonText: 'TIDAK',
+        }).then((result) => {
+          if (result.isConfirmed) {
+
+            // dispatch to action "deleteCategory" vuex
+            this.$store.dispatch('admin/product/destroyProduct', id)
+              .then(() => {
+
+                // refresh data
+                this.$nuxt.refresh()
+
+                // alert
+                this.$swal.fire({
+                  title: 'BERHASIL!',
+                  text: "Data Berhasil Dihapus!",
+                  icon: 'success',
+                  showConfirmButton: false,
+                  timer: 2000
+                })
+
+              })
+
+          }
+
+        })
 
       }
     }

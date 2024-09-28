@@ -118,6 +118,7 @@ export const actions = {
     })
   },
 
+  // updateProduct
   updateProduct({
     dispatch,
     commit
@@ -143,6 +144,29 @@ export const actions = {
         // error
         .catch(error => {
           reject(error)
+        })
+    })
+  },
+
+  destroyProduct({
+    dispatch,
+    commit
+  }, payload) {
+
+    // set promise
+    return new Promise((resolve, reject) => {
+
+      // delete to Rest API "/api/admin/categories/:id" with method "DELETE"
+      this.$axios.delete(`/api/admin/products/${payload}`)
+
+        // succes
+        .then(() => {
+
+          // dispatch action "getCategoriesData"
+          dispatch('getProductsData')
+
+          // resolve promise
+          resolve()
         })
     })
   },
