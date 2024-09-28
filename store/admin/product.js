@@ -6,6 +6,9 @@ export const state = () => ({
 
   // page
   page: 1,
+
+  // product
+  product: {}
 })
 
 // mutations
@@ -25,6 +28,12 @@ export const mutations = {
     state.page = payload
   },
 
+  // mutations "SET_PRODUCT_DATA"
+  SET_PRODUCT_DATA(state, payload) {
+
+    // set value state "products"
+    state.product = payload
+  },
 }
 
 // actions
@@ -80,6 +89,58 @@ export const actions = {
         })
 
         //error
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+
+  // getDetailProduct
+  getDetailProduct({
+    commit
+  }, payload) {
+
+    // set promise
+    return new Promise((resolve, reject) => {
+
+      // get to Rest API"/api/admin/products/:id" with method "GET"
+      this.$axios.get(`/api/admin/products/${payload}`)
+
+        // success
+        .then(response => {
+
+          // commit to mutation "SET_PRODUCT_DATA"
+          commit('SET_PRODUCT_DATA', response.data.data)
+
+          // resolve promise
+          resolve()
+        })
+    })
+  },
+
+  updateProduct({
+    dispatch,
+    commit
+  }, {
+    productId,
+    payload
+  }) {
+
+    // set promise
+    return new Promise((resolve, reject) => {
+      this.$axios.post(`/api/admin/products/${productId}`, payload)
+
+        // success
+        .then(() => {
+
+          // dispatch action "getProductsData"
+          dispatch('getProductsData')
+
+          // resolve promise
+          resolve()
+        })
+
+        // error
         .catch(error => {
           reject(error)
         })
