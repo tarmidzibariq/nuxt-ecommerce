@@ -99,7 +99,7 @@
       }
     },
 
-    // hook"Async Data" 
+    // hook "AsyncData" 
     async asyncData({
       store
     }) {
