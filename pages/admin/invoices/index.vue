@@ -36,6 +36,11 @@
                     <button v-if="row.item.status == 'failed'" class="btn btn-sm btn-danger"><i
                         class="fa fa-times-circle"></i> {{ row.item.status }}</button>
                   </template>
+                  <template v-slot:cell(actions)="row">
+                    <b-button :to="{name: 'admin-invoices-show-id', params: {id: row.item.id}}" variant="info" size="sm">
+                        DETAIL
+                    </b-button>
+                  </template>
                 </b-table>
 
                 <!-- pagination -->
