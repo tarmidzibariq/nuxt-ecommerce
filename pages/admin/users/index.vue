@@ -31,6 +31,13 @@
                   <template v-slot:cell(image)="data">
                     <img class="img-fluid" width="50" :src="data.item.image" />
                   </template>
+                  <template v-slot:cell(actions)="row">
+                    <b-button :to="{name: 'admin-users-edit-id', params: {id: row.item.id}}" variant="info"
+                      size="sm">
+                      EDIT
+                    </b-button>
+                    <!-- <b-button variant="danger" size="sm" @click="destroyProduct(row.item.id)">DELETE</b-button> -->
+                  </template>
                 </b-table>
 
                 <!-- pagination -->
