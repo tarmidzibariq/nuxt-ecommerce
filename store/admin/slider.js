@@ -1,84 +1,112 @@
 //state
 export const state = () => ({
 
-    //sliders
-    sliders: [],
+  //sliders
+  sliders: [],
 
-    //page
-    page: 1,
+  //page
+  page: 1,
 
 })
 
 //mutations
 export const mutations = {
 
-    //mutation "SET_SLIDERS_DATA"
-    SET_SLIDERS_DATA(state, payload) {
+  //mutation "SET_SLIDERS_DATA"
+  SET_SLIDERS_DATA(state, payload) {
 
-        //set value state "sliders"
-        state.sliders = payload
-    },
+    //set value state "sliders"
+    state.sliders = payload
+  },
 
-    //mutation "SET_PAGE"
-    SET_PAGE(state, payload) {
+  //mutation "SET_PAGE"
+  SET_PAGE(state, payload) {
 
-        //set value state "page"
-        state.page = payload
-    },
+    //set value state "page"
+    state.page = payload
+  },
 
 }
 
 //actions
 export const actions = {
 
-    //get sliders data
-    getSlidersData({ commit, state }, payload) {
+  //get sliders data
+  getSlidersData({
+    commit,
+    state
+  }, payload) {
 
-        //search
-        let search = payload ? payload : ''
+    //search
+    let search = payload ? payload : ''
 
-        //set promise
-        return new Promise((resolve, reject) => {
+    //set promise
+    return new Promise((resolve, reject) => {
 
-            //fetching Rest API "/api/admin/sliders" with method "GET"
-            this.$axios.get(`/api/admin/sliders?q=${search}&page=${state.page}`)
-            
-            //success
-            .then((response) => {
+      //fetching Rest API "/api/admin/sliders" with method "GET"
+      this.$axios.get(`/api/admin/sliders?q=${search}&page=${state.page}`)
 
-                //commit ti mutation "SET_SLIDERS_DATA"
-                commit('SET_SLIDERS_DATA', response.data.data)
+        //success
+        .then((response) => {
 
-                //resolve promise
-                resolve()
-            })
+          //commit ti mutation "SET_SLIDERS_DATA"
+          commit('SET_SLIDERS_DATA', response.data.data)
 
+          //resolve promise
+          resolve()
         })
 
-    },
-    storeSlider({ dispatch, commit }, payload) { 
+    })
 
-        // set promise
-        return new Promise((resolve, reject) => { 
+  },
+  storeSlider({
+    dispatch,
+    commit
+  }, payload) {
 
-            // store to Rest API "/api/admin/sliders" with method "POST"
-            this.$axios.post('api/admin/sliders', payload)
+    // set promise
+    return new Promise((resolve, reject) => {
 
-                // success
-                .then(() => {
-                    
-                    // distpatch action "getSlidersData"
-                    dispatch('getSlidersData')
-                    
-                    // resolve promise
-                    resolve()
-                })
+      // store to Rest API "/api/admin/sliders" with method "POST"
+      this.$axios.post('api/admin/sliders', payload)
 
-                // error
-                .catch(error => {
-                    reject(error)
-                })
+        // success
+        .then(() => {
+
+          // distpatch action "getSlidersData"
+          dispatch('getSlidersData')
+
+          // resolve promise
+          resolve()
         })
-    }
+
+        // error
+        .catch(error => {
+          reject(error)
+        })
+    })
+  },
+  destroySlider({
+    dispatch,
+    commit
+  }, payload) {
+    
+    // set promise
+    return new Promise((resolve, reject) => {
+
+      // delete to Rest API "/api/admin/sliders/:id" with method "DELETE"
+      this.$axios.delete(`/api/admin/sliders/${payload}`)
+
+        // succes
+        .then(() => {
+
+          // dispatch action "getSlidersData"
+          dispatch('getSlidersData"')
+
+          // resolve promise
+          resolve()
+        })
+    })
+  }
 
 }

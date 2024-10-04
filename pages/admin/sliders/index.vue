@@ -17,6 +17,9 @@
                   <template v-slot:cell(image)="data">
                     <img class="img-fluid" width="200" :src="data.item.image" />
                   </template>
+                  <template v-slot:cell(actions)="row">
+                    <b-button variant="danger" size="sm" @click="destroySlider(row.item.id)">DELETE</b-button>
+                  </template>
                 </b-table>
 
                 <!-- pagination -->
@@ -91,6 +94,44 @@
         //dispatch on action "getSlidersData"
         this.$store.dispatch('admin/slider/getSlidersData"', this.search)
       },
+
+      // method "destroySlider"
+      destroySlider(id) {
+        this.$swal.fire({
+          title: 'APAKAH ANDA YAKIN ?',
+          text: "INGIN MENGHAPUS DATA INI !",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'YA, HAPUS!',
+          cancelButtonText: 'TIDAK',
+        }).then((result) => {
+          if (result.isConfirmed) {
+
+            // dispatch to action "deleteSlider" vuex
+            this.$store.dispatch('admin/slider/destroySlider', id)
+              .then(() => {
+
+                // refresh data
+                this.$nuxt.refresh()
+
+                // alert
+                this.$swal.fire({
+                  title: 'BERHASIL!',
+                  text: "Data Berhasil Dihapus!",
+                  icon: 'success',
+                  showConfirmButton: false,
+                  timer: 2000
+                })
+
+              })
+
+          }
+
+        })
+
+      }
     }
   }
 
