@@ -15,7 +15,8 @@
 
               <div class="form-group">
                 <div class="input-group mb-3">
-                  <input type="text" class="form-control" @keypress.enter="searchData" placeholder="cari berdasarkan no. invoice">
+                  <input type="text" class="form-control" @keypress.enter="searchData"
+                    placeholder="cari berdasarkan no. invoice">
                   <div class="input-group-append">
                     <button @click="searchData" class="btn btn-warning"><i class="fa fa-search"></i>
                       SEARCH
@@ -38,11 +39,17 @@
                   <button v-if="row.item.status == 'failed'" class="btn btn-sm btn-danger"><i
                       class="fa fa-times-circle"></i> {{ row.item.status }}</button>
                 </template>
+                <template v-slot:cell(actions)="row">
+                  <b-button :to="{name: 'customer-invoices-show-snap_token', params: {snap_token: row.item.snap_token}}"
+                    variant="info" size="sm">
+                    DETAIL
+                  </b-button>
+                </template>
               </b-table>
 
               <!-- pagination -->
-            <b-pagination align="right" :value="invoices.current_page" :total-rows="invoices.total"
-              :per-page="invoices.per_page" @change="changePage" aria-controls="my-table"></b-pagination>
+              <b-pagination align="right" :value="invoices.current_page" :total-rows="invoices.total"
+                :per-page="invoices.per_page" @change="changePage" aria-controls="my-table"></b-pagination>
 
             </div>
           </div>
@@ -101,39 +108,41 @@
     },
 
     // hook "asyncData"
-    async asyncData({ store }) {
-        await store.dispatch('customer/invoice/getInvoicesData')
+    async asyncData({
+      store
+    }) {
+      await store.dispatch('customer/invoice/getInvoicesData')
     },
 
     // computed
     computed: {
 
-        // invoices
-        invoices() {
-            return this.$store.state.customer.invoice.invoices
-        }
+      // invoices
+      invoices() {
+        return this.$store.state.customer.invoice.invoices
+      }
     },
 
     methods: {
 
-        // method "searchData"
-        searchData() { 
-            // commit to mutation "SET_PAGE"
-            this.$store.commit('customer/invoice/SET_PAGE', 1)
+      // method "searchData"
+      searchData() {
+        // commit to mutation "SET_PAGE"
+        this.$store.commit('customer/invoice/SET_PAGE', 1)
 
-            // dispatch on action "getUsersData"
-            this.$store.dispatch('customer/invoice/getInvoicesData', this.search)
-        },
+        // dispatch on action "getUsersData"
+        this.$store.dispatch('customer/invoice/getInvoicesData', this.search)
+      },
 
-        //method "changePage"
-        changePage(page) {
+      //method "changePage"
+      changePage(page) {
 
-            //commit to mutation "SET_PAGE"
-            this.$store.commit('customer/invoice/SET_PAGE', page)
+        //commit to mutation "SET_PAGE"
+        this.$store.commit('customer/invoice/SET_PAGE', page)
 
-            //dispatch on action "getInvoicesData"
-            this.$store.dispatch('customer/invoice/getInvoicesData', this.search)
-        },
+        //dispatch on action "getInvoicesData"
+        this.$store.dispatch('customer/invoice/getInvoicesData', this.search)
+      },
     }
 
   }
