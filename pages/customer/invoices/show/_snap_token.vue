@@ -93,7 +93,7 @@
                     </td>
                     <td>:</td>
                     <td>
-                      <button v-if="invoice.status == 'pending'"
+                      <button @click="payment(invoice.snap_token)" v-if="invoice.status == 'pending'"
                         class="btn btn-info">BAYAR SEKARANG</button>
                       <button v-else-if="invoice.status == 'success'"
                         class="btn btn-success"><i class="fa fa-check-circle"></i> {{ invoice.status }}</button>
@@ -181,6 +181,42 @@ export default {
     computed: {
         invoice() {
             return this.$store.state.customer.invoice.invoice
+        }
+    },
+
+    methods: {
+
+        // methods "payment"
+        payment(snap_token) {
+            window.snap.pay(snap_token, {
+                onSuccess : function () {
+                    router.push({
+                        name: 'invoices-show-snap_token',
+                        params: {
+                            snap_token: snap_token
+                        }
+                    })
+                },
+                
+                onPending : function () {
+                    router.push({
+                        name: 'invoices-show-snap_token',
+                        params: {
+                            snap_token: snap_token
+                        }
+                    })
+                },
+                
+                onError : function () {
+                    router.push({
+                        name: 'invoices-show-snap_token',
+                        params: {
+                            snap_token: snap_token
+                        }
+                    })
+                },
+                
+            })
         }
     }
   }
