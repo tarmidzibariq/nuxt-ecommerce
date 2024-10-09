@@ -265,15 +265,15 @@
       },
 
       // method "storeReview"
-      async asyncData(orderId, productId) {
+      async storeReview(orderId, productId) {
 
         // define formData
         let formData = new FormData();
 
         formData.append('rating', this.rating.star)
         formData.append('review', this.rating.review)
-        formData.append('order_id', this.rating.order_id)
-        formData.append('product_id', this.rating.product_id)
+        formData.append('order_id', this.rating.orderId)
+        formData.append('product_id', this.rating.productId)
 
         // sending data to action "storeReview" vuex
         await this.$store.dispatch('customer/review/storeReview', formData)
