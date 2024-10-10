@@ -1,54 +1,60 @@
-// state
+//state
 export const state = () => ({
 
-  // products
-  products: [],
+    //products
+    products: [],
 
-  // page
-  page: 1
+    //page
+    page: 1,
+
 })
 
-// mutations
+//mutations
 export const mutations = {
 
-  // mutations "SET_PRODUCTS_DATA"
-  SET_PRODUCTS_DATA(state, payload) {
+    //mutation "SET_PRODUCTS_DATA"
+    SET_PRODUCTS_DATA(state, payload) {
 
-    // set value state "products"
-    state.products = payload
-  },
+        //set value state "products"
+        state.products = payload
+    },
 
-  // mutation "SET_PAGE"
-  SET_PAGE(state, payload) {
+    //mutation "SET_PAGE"
+    SET_PAGE(state, payload) {
 
-    // set value state "page"
-    state.page = payload
-  }
+        //set value state "page"
+        state.page = payload
+    },
+
 }
 
-// actions
+//actions
 export const actions = {
-  // get products data
-  getProductsData({ commit, state }, payload) { 
 
-    // search
-    let search = payload ? payload : ''
-    
-    // set promise
-    return new Promise((resolve, reject) => { 
+    //get products data
+    getProductsData({ commit, state }, payload) {
 
-      // fetching Rest API "/api/web/products" with method "GET"
-      this.$axios.get(`/api/web/products?q=${search}&page=${state.page}`)
+        //search
+        let search = payload ? payload : ''
 
-      // succes
-        .then((response) => { 
+        //set promise
+        return new Promise((resolve, reject) => {
 
-          // commit mutations "SET_PRODUCTS_DATA"]
-          commit('SET_PRODUCTS_DATA', response.data.data)
+            //fetching Rest API "/api/web/products" with method "GET"
+            this.$axios.get(`/api/web/products?q=${search}&page=${state.page}`)
+            
+            //success
+            .then((response) => {
 
-          // resolve promise
-          resolve()
+                //commit ti mutation "SET_PRODUCTS_DATA"
+                commit('SET_PRODUCTS_DATA', response.data.data)
+
+                //resolve promise
+                resolve()
+            })
+
         })
-    })
-  }
+
+    },
+
 }
