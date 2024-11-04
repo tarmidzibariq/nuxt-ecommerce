@@ -40,7 +40,7 @@
                 </table>
               </div>
               <hr>
-              <button class="btn btn-lg btn-warning border-0 shadow-sm"><i class="fa fa-shopping-cart"></i> TAMBAH KE
+              <button @click="addToCart(product.id, calculateDiscount(product), product.weight)" class="btn btn-lg btn-warning border-0 shadow-sm"><i class="fa fa-shopping-cart"></i> TAMBAH KE
                 KERANJANG</button>
             </div>
           </div>
@@ -135,6 +135,53 @@
       // product
       product() {
         return this.$store.state.web.product.product
+      }
+    },
+
+    // method
+    methods: {
+
+        // method "AddToCart"
+      async addToCart(productId, price, weight) {
+
+        // check loggIn "false"
+        if (!this.$auth.loggedIn) { 
+
+          // redirect
+          return this.$router.push({
+            name:'customer-login'
+          })
+        }
+
+        // check customer role
+        if (this.$auth.strategy.name != "customer") {
+
+          // redirect
+          return this.$router.push({
+            name:'customer-login'
+          })
+        }
+
+        // dispatch to action "storeCart" vuex
+        await this.$store.dispatch('web/cart/storeCart', {
+          product_id: productId,
+          price: price,
+          qty: 1,
+          weight: weight
+        })
+
+        // success add to cart
+          .then(() => {
+
+            //sweet alert
+            this.$swal.fire({
+              title: 'BERHASIL!',
+              text: "Product Berhasil Ditambahkan di Keranjang!",
+              icon: 'success',
+              showConfirmButton: false,
+              timer: 3000
+            })
+        })
       }
     }
   }
