@@ -21,7 +21,7 @@
           </div>
           <div class="col-lg-5 col-xl-4 col-sm-8 col-md-4 col-7">
             <div class="d-flex justify-content-end">
-              <a href="#" class="btn search-button btn-md d-md-block ml-4"><i class="fa fa-shopping-cart"></i> <span class="ml-2">0</span> | Rp. 0</a>
+              <nuxt-link :to="{name: 'cart'}" class="btn search-button btn-md d-md-block ml-4"><i class="fa fa-shopping-cart"></i> <span class="ml-2">{{ cartTotal }}</span> | Rp. {{ formatPrice(cartPrice) }}</nuxt-link>
             </div>
           </div>
         </div>
@@ -81,6 +81,14 @@
 
       // fetching sliders on Rest API
       await this.$store.dispatch('web/category/getCategoriesData')
+
+      if (this.$auth.loggedIn && this.$auth.strategy.name == 'customer') { 
+
+        // fething carts on Rest API
+        await this.$store.dispatch('web/cart/getCartsData')
+        await this.$store.dispatch('web/cart/getCartPrice')
+
+      } 
     },
 
     // computed
@@ -89,7 +97,17 @@
       // categories
       categories() {
         return this.$store.state.web.category.categories
-      }
+      },
+
+      // cartPrice
+      cartPrice() {
+        return this.$store.state.web.cart.cartPrice
+      },
+
+      // cartTotal
+      cartTotal() {
+        return this.$store.state.web.cart.carts.length
+      },
     },
     //data function
     data() {
