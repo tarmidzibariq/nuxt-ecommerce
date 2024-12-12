@@ -50,7 +50,7 @@
                 <div class="dropdown-divider"></div>
                 <nuxt-link :to="{name: 'categories'}" class="dropdown-item active text-center" href="" data-abc="true">
                   LIHAT SEMUA KATEGORI <i class="fa fa-long-arrow-alt-right"></i>
-                </nuxt-link>
+                </nuxt-link>v 
               </div>
             </li>
             <li class="nav-item"> <nuxt-link :to="{name: 'products'}" class="nav-link" data-abc="true"><i class="fa fa-shopping-bag"></i> SEMUA PRODUK</nuxt-link> </li>
