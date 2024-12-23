@@ -39,7 +39,7 @@
 
                         <br>
                         <div class="text-right">
-                          <button class="btn btn-sm btn-danger">
+                          <button @click.prevent="removeCart(cart.id)" class="btn btn-sm btn-danger">
                             <i class="fa fa-trash"></i>
                           </button>
                         </div>
@@ -225,6 +225,49 @@
           phone: false,
           address: false
         },
+      }
+    },
+    
+    // methods
+    methods : {
+
+      // method "removeCart"
+      async removeCart(cartId) {
+
+        await this.$swal.fire({
+          title: 'APAKAH ANDA YAKIN ?',
+          text: "INGIN MENGHAPUS DATA INI !",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#d33',
+          cancelButtonColor: '#3085d6',
+          confirmButtonText: 'YA, HAPUS!',
+          cancelButtonText: 'TIDAK',
+
+        }).then((result) => {
+          if (result.isConfirmed) {
+
+            // call action vuex "removeCart"
+            this.$store.dispatch('web/cart/removeCart', {
+              cart_id: cartId
+            })
+
+              .then(async () => {
+
+                // dispatch action "getCartPrice"
+                await this.$store.dispatch('web/cart/getCartPrice')
+
+                // alert
+                this.$swal.fire({
+                  title: 'BERHASIL!',
+                  text: "Product Berhasil Dihapus dari Keranjang!",
+                  icon: 'success',
+                  showConfirmButton: false,
+                  timer: 2000
+                })
+              })
+          }
+        })
       }
     }
   }
