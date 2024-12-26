@@ -219,9 +219,17 @@
       store,
       route
     }) {
-      await store.dispatch('customoer/invoice/getDetailInvoice', route.params.snap_token)
+      await store.dispatch('customer/invoice/getDetailInvoice', route.params.snap_token)
     },
-
+    data() {
+      return {
+        //state rating
+        rating: {
+          star: 0,
+          review: ''
+        },
+      }
+    },
     // computed
     computed: {
       invoice() {
@@ -272,8 +280,8 @@
 
         formData.append('rating', this.rating.star)
         formData.append('review', this.rating.review)
-        formData.append('order_id', this.rating.orderId)
-        formData.append('product_id', this.rating.productId)
+        formData.append('order_id', orderId)
+        formData.append('product_id', productId)
 
         // sending data to action "storeReview" vuex
         await this.$store.dispatch('customer/review/storeReview', formData)
